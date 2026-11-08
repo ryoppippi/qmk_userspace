@@ -12,12 +12,9 @@
           statix.enable = true;
         };
 
-        # Rendered by draw-keymap; formatting them would make the staleness
+        # Rendered by draw-keymap; formatting it would make the staleness
         # check report a diff that the generator never wrote.
-        settings.global.excludes = [
-          "keymap.svg"
-          "keymap.pdf"
-        ];
+        settings.global.excludes = [ "keymap.svg" ];
 
         settings.formatter = {
           deadnix.priority = 1;

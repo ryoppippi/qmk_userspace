@@ -7,18 +7,42 @@
 {
   perSystem =
     { pkgs, self', ... }:
-    let
-      fontPath = "${pkgs.ibm-plex}/share/fonts/opentype";
-    in
     {
+      # Typst only sees the pinned IBM Plex fonts and a fixed timestamp. The
+      # PDF still differs between x86_64 and aarch64 (text is outlined with
+      # floating-point maths), so it is a build artefact rather than a
+      # tracked file; only the SVG is compared in checks.keymap-drawing.
+      packages.render-keymap-pdf = pkgs.writeShellApplication {
+        name = "render-keymap-pdf";
+        runtimeInputs = [
+          pkgs.coreutils
+          pkgs.typst
+        ];
+        text = ''
+          svg=$(realpath "$1")
+          pdf=$(realpath -m "$2")
+          work=$(mktemp -d)
+          trap 'rm -rf "$work"' EXIT
+          cp "$svg" "$work/keymap.svg"
+          printf '#set page(width: auto, height: auto, margin: 16pt)\n#image("keymap.svg")\n' > "$work/keymap.typ"
+          SOURCE_DATE_EPOCH=0 typst compile \
+            --root "$work" \
+            --font-path ${pkgs.ibm-plex}/share/fonts/opentype \
+            --ignore-system-fonts --ignore-embedded-fonts \
+            "$work/keymap.typ" "$pdf"
+        '';
+      };
+
       packages.draw-keymap = pkgs.writeShellApplication {
         name = "draw-keymap";
         runtimeInputs = [
+          pkgs.coreutils
+          pkgs.gnused
           pkgs.qmk
           pkgs.keymap-drawer
           pkgs.yq-go
-          pkgs.typst
           pkgs.pkgsCross.avr.buildPackages.gcc
+          self'.packages.render-keymap-pdf
         ];
         text = ''
           out=$(realpath "''${1:-.}")
@@ -48,18 +72,15 @@
           yq eval-all '. as $i ireduce ({}; . * $i)' "$work/default.yaml" keymap-drawer.yaml > "$work/config.yaml"
 
           keymap -c "$work/config.yaml" parse -c 12 -l "''${names[@]}" -q "$work/keymap.json" > "$work/keymap.yaml"
-          keymap -c "$work/config.yaml" draw --qmk-info-json "$work/info.json" "$work/keymap.yaml" > "$work/keymap.svg"
-
-          # Typst only sees the pinned IBM Plex fonts and a fixed timestamp,
-          # so the PDF is byte-identical on every machine, which
-          # checks.keymap-drawing relies on.
-          printf '#set page(width: auto, height: auto, margin: 16pt)\n#image("keymap.svg")\n' > "$work/keymap.typ"
-          SOURCE_DATE_EPOCH=0 typst compile \
-            --root "$work" --font-path ${fontPath} --ignore-system-fonts --ignore-embedded-fonts \
-            "$work/keymap.typ" "$out/keymap.pdf"
-          cp "$work/keymap.svg" "$out/keymap.svg"
+          keymap -c "$work/config.yaml" draw --qmk-info-json "$work/info.json" "$work/keymap.yaml" > "$out/keymap.svg"
+          render-keymap-pdf "$out/keymap.svg" "$out/keymap.pdf"
         '';
       };
+
+      packages.keymap-pdf = pkgs.runCommand "keymap-pdf" { } ''
+        mkdir $out
+        ${lib.getExe self'.packages.render-keymap-pdf} ${../keymap.svg} $out/keymap.pdf
+      '';
 
       checks.keymap-drawing =
         pkgs.runCommand "keymap-drawing-up-to-date"
@@ -70,7 +91,6 @@
                 ../${target.keymapDir}/keymap.c
                 ../keymap-drawer.yaml
                 ../keymap.svg
-                ../keymap.pdf
               ];
             };
           }
@@ -79,12 +99,10 @@
             mkdir -p $fresh
             cd $src
             ${lib.getExe self'.packages.draw-keymap} $fresh
-            for file in keymap.svg keymap.pdf; do
-              if ! cmp -s $file $fresh/$file; then
-                echo "$file is stale; run 'just draw' and commit the result." >&2
-                exit 1
-              fi
-            done
+            if ! cmp -s keymap.svg $fresh/keymap.svg; then
+              echo "keymap.svg is stale; run 'just draw' and commit the result." >&2
+              exit 1
+            fi
             touch $out
           '';
     };
