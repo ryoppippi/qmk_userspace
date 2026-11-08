@@ -1,4 +1,6 @@
 {
     "userspace_version": "1.0",
-    "build_targets": []
+    "build_targets": [
+        ["dailycraft/claw44/rev1", "ryoppippi"]
+    ]
 }
