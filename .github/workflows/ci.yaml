@@ -19,14 +19,16 @@ jobs:
           persist-credentials: false
       - uses: cachix/install-nix-action@75c75c31ebece974e48ebc36b4ad125bd97bd97b # v31.11.3
       - run: nix flake check --print-build-logs
-      - run: nix build
-      - run: nix build .#keymap-pdf -o result-pdf
+      - name: Collect artefacts
+        run: |
+          nix build .#default .#keymap-pdf
+          mkdir dist
+          cp -L result/*.hex result-1/keymap.pdf dist/
       - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
-          name: firmware
-          path: |
-            result/*.hex
-            result-pdf/keymap.pdf
+          name: release
+          path: dist/
+          if-no-files-found: error
 
   publish:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
@@ -37,14 +39,16 @@ jobs:
     steps:
       - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
-          name: firmware
+          name: release
+          path: dist
       - name: Publish firmware
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REPO: ${{ github.repository }}
         run: |
+          ls dist/*.hex dist/keymap.pdf
           gh release delete latest --cleanup-tag --yes || true
-          gh release create latest ./*.hex ./keymap.pdf \
+          gh release create latest dist/* \
             --target "$GITHUB_SHA" \
             --title "Latest firmware" \
             --notes "Built from $GITHUB_SHA."
