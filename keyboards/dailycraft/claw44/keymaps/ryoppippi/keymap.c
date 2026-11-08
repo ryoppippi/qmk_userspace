@@ -9,6 +9,15 @@ enum layer_number {
     _ADJUST,
 };
 
+enum custom_keycodes {
+    M_HNDL = SAFE_RANGE,
+    M_GIVEN,
+    M_FAMLY,
+    M_RYO,
+    M_GMAIL,
+    M_LGTM,
+};
+
 #define RHYPR_T(kc) MT(MOD_RCTL | MOD_RSFT | MOD_RALT | MOD_RGUI, kc)
 
 #define C_ESC LCTL_T(KC_ESC)
@@ -73,7 +82,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
        KC_ESC , _______, MS_BTN1, MS_BTN3, MS_BTN2, _______,     MS_LEFT, MS_DOWN, MS_UP  , MS_RGHT, _______, _______,
     //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
-       _______, _______, _______, _______, _______, _______,     _______, _______, _______, _______, _______, _______,
+       _______, M_GMAIL, M_RYO  , M_FAMLY, M_GIVEN, M_HNDL ,     M_LGTM , _______, _______, _______, _______, _______,
     //`--------+--------+--------+--------+--------+--------/   \--------+--------+--------+--------+--------+--------'
                          _______, _______, _______, _______,     _______, _______, _______, _______
     //                  `--------+--------+--------+--------'   `--------+--------+--------+--------'
@@ -91,6 +100,33 @@ uint16_t get_tapping_term(uint16_t keycode, keyrecord_t *record) {
         default:
             return TAPPING_TERM;
     }
+}
+
+bool process_record_user(uint16_t keycode, keyrecord_t *record) {
+    if (!record->event.pressed) {
+        return true;
+    }
+    switch (keycode) {
+        case M_HNDL:
+            SEND_STRING("ryoppippi");
+            return false;
+        case M_GIVEN:
+            SEND_STRING("ryotaro");
+            return false;
+        case M_FAMLY:
+            SEND_STRING("kimura");
+            return false;
+        case M_RYO:
+            SEND_STRING("ryo");
+            return false;
+        case M_GMAIL:
+            SEND_STRING("m.ryoppippi@gmail.com");
+            return false;
+        case M_LGTM:
+            SEND_STRING("lgtm");
+            return false;
+    }
+    return true;
 }
 
 layer_state_t layer_state_set_user(layer_state_t state) {
