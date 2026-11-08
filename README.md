@@ -10,17 +10,10 @@ My keymaps, built against upstream [QMK](https://github.com/qmk/qmk_firmware) as
 
 Every push runs GitHub Actions and publishes the firmware to the `latest` release.
 
-Locally:
+Locally, with Nix (`direnv allow` once, or `nix develop`):
 
 ```sh
-qmk config user.overlay_dir="$(realpath .)"
-qmk userspace-compile
+just build   # nix build -> result/*.hex
+just flash   # build, then flash; press the reset switch on each half
+just update  # bump the pinned qmk_firmware
 ```
-
-## Flash
-
-```sh
-qmk flash -kb dailycraft/claw44/rev1 -km ryoppippi
-```
-
-Then press the reset switch on each half.

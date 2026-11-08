@@ -1,0 +1,48 @@
+{
+  "nodes": {
+    "nixpkgs": {
+      "locked": {
+        "lastModified": 1794042290,
+        "narHash": "sha256-ziZn2PvCJE5JEEpqTdxXwJpPB+L3YqoCpTAMCzyaP3U=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "f4a03c008967841f2a0b3cb7c436fc6fc31671f6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "NixOS",
+        "ref": "nixos-unstable",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "qmk_firmware": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1794097802,
+        "narHash": "sha256-Q33loYLvw1R9u2ljRereJeg98y7By/xb77r6lpVsW+0=",
+        "ref": "master",
+        "rev": "d194c077ed964195ec16d255c7a4b89a794cf03b",
+        "shallow": true,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/qmk/qmk_firmware"
+      },
+      "original": {
+        "ref": "master",
+        "shallow": true,
+        "submodules": true,
+        "type": "git",
+        "url": "https://github.com/qmk/qmk_firmware"
+      }
+    },
+    "root": {
+      "inputs": {
+        "nixpkgs": "nixpkgs",
+        "qmk_firmware": "qmk_firmware"
+      }
+    }
+  },
+  "root": "root",
+  "version": 7
+}
