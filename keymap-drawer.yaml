@@ -44,20 +44,29 @@ parse_config:
     MS_DOWN: Mouse ↓
     MS_UP: Mouse ↑
     MS_RGHT: Mouse →
+    M_HNDL: ryoppippi
+    M_GIVEN: ryotaro
+    M_FAMLY: kimura
+    M_RYO: ryo
+    M_GMAIL: gmail
+    M_LGTM: lgtm
   raw_binding_map:
-    LCTL_T(KC_ESC): {t: Esc, h: Ctrl}
-    LSG_T(KC_S): {t: S, h: Shift+Cmd}
-    LALT_T(KC_D): {t: D, h: Opt}
-    LGUI_T(KC_F): {t: F, h: Cmd}
-    LCTL_T(KC_G): {t: G, h: Ctrl}
-    RCTL_T(KC_H): {t: H, h: Ctrl}
-    RGUI_T(KC_J): {t: J, h: Cmd}
-    RALT_T(KC_K): {t: K, h: Opt}
-    RSG_T(KC_L): {t: L, h: Shift+Cmd}
-    MT(MOD_RCTL | MOD_RSFT | MOD_RALT | MOD_RGUI, KC_SCLN): {t: ';', h: Hyper}
-    LGUI_T(KC_LNG2): {t: 英数, h: Cmd}
-    LSFT_T(KC_TAB): {t: Tab, h: Shift}
-    RSFT_T(KC_TAB): {t: Tab, h: Shift}
-    MT(MOD_RCTL | MOD_RSFT | MOD_RALT | MOD_RGUI, KC_LNG1): {t: かな, h: Hyper}
+    LCTL_T(KC_ESC): { t: Esc, h: Ctrl }
+    LSG_T(KC_S): { t: S, h: Shift+Cmd }
+    LALT_T(KC_D): { t: D, h: Opt }
+    LGUI_T(KC_F): { t: F, h: Cmd }
+    LCTL_T(KC_G): { t: G, h: Ctrl }
+    RCTL_T(KC_H): { t: H, h: Ctrl }
+    RGUI_T(KC_J): { t: J, h: Cmd }
+    RALT_T(KC_K): { t: K, h: Opt }
+    RSG_T(KC_L): { t: L, h: Shift+Cmd }
+    MT(MOD_RCTL | MOD_RSFT | MOD_RALT | MOD_RGUI, KC_SCLN): { t: ";", h: Hyper }
+    LGUI_T(KC_LNG2): { t: 英数, h: Cmd }
+    LSFT_T(KC_TAB): { t: Tab, h: Shift }
+    RSFT_T(KC_TAB): { t: Tab, h: Shift }
+    MT(MOD_RCTL | MOD_RSFT | MOD_RALT | MOD_RGUI, KC_LNG1): { t: かな, h: Hyper }
 draw_config:
   split_gap: 40
+  # The PDF is rendered with only these Nix-provided fonts available.
+  svg_extra_style: |
+    svg.keymap { font-family: "IBM Plex Mono", "IBM Plex Sans JP", monospace; }
