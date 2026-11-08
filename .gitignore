@@ -16,5 +16,5 @@ compile_commands.json
 .cache/
 
 # Nix
-result
+result*
 .direnv/

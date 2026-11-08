@@ -6,6 +6,12 @@ My keymaps, built against upstream [QMK](https://github.com/qmk/qmk_firmware) as
 |---|---|
 | [Claw44 rev1](https://github.com/dailycraftkeyboard/claw44) | [`keyboards/dailycraft/claw44/keymaps/ryoppippi`](keyboards/dailycraft/claw44/keymaps/ryoppippi) |
 
+## Layout
+
+![claw44 keymap](keymap.svg)
+
+Generated from `keymap.c` with [keymap-drawer](https://github.com/caksoylar/keymap-drawer); also available as [PDF](keymap.pdf).
+
 ## Build
 
 Every push runs GitHub Actions and publishes the firmware to the `latest` release.
@@ -16,4 +22,5 @@ Locally, with Nix (`direnv allow` once, or `nix develop`):
 just build   # nix build -> result/*.hex
 just flash   # build, then flash; press the reset switch on each half
 just update  # bump the pinned qmk_firmware
+just draw    # regenerate keymap.svg and keymap.pdf
 ```
