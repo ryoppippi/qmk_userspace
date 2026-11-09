@@ -1,15 +1,10 @@
 default: build
 
-target := "dailycraft/claw44/rev1:ryoppippi"
-
-# Incremental build against the pinned QMK from the dev shell.
-qmk_make := 'make -C "${QMK_HOME:?enter the dev shell first}" QMK_USERSPACE="$PWD" BUILD_DIR="$PWD/.build" SKIP_GIT=yes -j' + num_cpus()
-
 build:
-    {{ qmk_make }} {{ target }}
+    nix build
 
 flash:
-    {{ qmk_make }} {{ target }}:flash
+    nix run .#flash
 
 draw:
     nix run .#draw-keymap

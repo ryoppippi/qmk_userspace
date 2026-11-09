@@ -6,7 +6,6 @@
 ._*
 
 # Firmware files
-.build/
 *.hex
 *.bin
 *.uf2

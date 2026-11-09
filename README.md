@@ -20,12 +20,12 @@ I talked about this Claw44 and split keyboards in general (in Japanese):
 
 ## Build
 
-Everything is pinned through Nix (`flake.lock`). `just build` compiles incrementally against the same pinned QMK and toolchain; `nix build` and CI build from scratch in the sandbox. Each push to `main` publishes the firmware and the keymap PDF to the `latest` release.
+Everything is pinned through Nix (`flake.lock`), and CI runs the same commands as below. QMK's own objects are cached as a separate derivation, so editing `keymap.c` only recompiles and links the keymap (about 2 s); `nix flake check` also runs QMK's full build and checks that it produces the same hex. Each push to `main` publishes the firmware and the keymap PDF to the `latest` release.
 
 Locally (`direnv allow` once, or `nix develop`, which also installs the git hooks):
 
 ```sh
-just build   # incremental build in .build/ -> *.hex (about 10 s after an edit)
+just build   # nix build -> result/*.hex
 just flash   # build, then flash; press the reset switch on each half
 just draw    # regenerate keymap.svg (and an untracked keymap.pdf)
 just fmt     # nix fmt (treefmt)
