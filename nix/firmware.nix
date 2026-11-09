@@ -25,9 +25,8 @@
         buildPhase = ''
           runHook preBuild
           export HOME=$TMPDIR
-          cp -r --no-preserve=mode ${inputs.qmk_firmware} $TMPDIR/qmk_firmware
-          make -C $TMPDIR/qmk_firmware ${target.keyboard}:${target.keymap} \
-            QMK_USERSPACE=$PWD SKIP_GIT=yes -j$NIX_BUILD_CORES
+          make -C ${inputs.qmk_firmware} ${target.keyboard}:${target.keymap} \
+            QMK_USERSPACE=$PWD BUILD_DIR=$TMPDIR/build SKIP_GIT=yes -j$NIX_BUILD_CORES
           runHook postBuild
         '';
 
