@@ -21,11 +21,25 @@
       ];
       keymapC = ../${target.keymapDir}/keymap.c;
 
-      # Every compile and link runs with pkgs.qmk as an input: it propagates
-      # the Python QMK's make needs, and its presence switches on the avr-gcc
-      # wrapper's extra flags, so replaying a command anywhere else would
-      # produce a different hex.
-      toolchain.nativeBuildInputs = [ pkgs.qmk ];
+      # Every compile and link runs in this environment: pkgs.qmk propagates
+      # the Python QMK's make needs, and the avr-gcc wrapper reads its flags
+      # from the environment, so replaying a command anywhere else could
+      # produce a different hex. Hardening flags only bloat AVR firmware.
+      toolchain = {
+        nativeBuildInputs = [
+          avrGcc
+          pkgs.qmk
+        ];
+        hardeningDisable = [ "all" ];
+      };
+
+      # nixpkgs' cc-wrapper forces frame pointers on every target; on AVR that
+      # pins a register pair and grows the firmware, and QMK never asks for it.
+      avrGcc = pkgs.pkgsCross.avr.buildPackages.gcc.overrideAttrs (old: {
+        postFixup = (old.postFixup or "") + ''
+          sed -i '/omit-frame-pointer/d' $out/nix-support/cc-cflags-before
+        '';
+      });
 
       record = writeNuApplication { name = "record"; };
       build-objects = writeNuApplication {
