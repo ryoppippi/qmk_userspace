@@ -18,6 +18,11 @@ enum custom_keycodes {
     M_LGTM,
 };
 
+// Only this file reads these, so tuning them rebuilds just the keymap rather
+// than all of QMK, which config.h would.
+#define TAPPING_LAYER_TERM 230
+#define RETRO_TAPPING_TERM 1000
+
 #define RHYPR_T(kc) MT(MOD_RCTL | MOD_RSFT | MOD_RALT | MOD_RGUI, kc)
 
 #define C_ESC LCTL_T(KC_ESC)
