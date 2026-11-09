@@ -30,6 +30,10 @@
               "*.yml"
             ];
           };
+          nufmt = {
+            command = lib.getExe pkgs.nufmt;
+            includes = [ "*.nu" ];
+          };
           actionlint = {
             command = lib.getExe pkgs.actionlint;
             includes = [ ".github/workflows/*.yaml" ];
