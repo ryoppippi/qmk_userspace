@@ -35,6 +35,7 @@
 
       # nixpkgs' cc-wrapper forces frame pointers on every target; on AVR that
       # pins a register pair and grows the firmware, and QMK never asks for it.
+      # Drop this once https://github.com/NixOS/nixpkgs/issues/585479 is fixed.
       avrGcc = pkgs.pkgsCross.avr.buildPackages.gcc.overrideAttrs (old: {
         postFixup = (old.postFixup or "") + ''
           sed -i '/omit-frame-pointer/d' $out/nix-support/cc-cflags-before
