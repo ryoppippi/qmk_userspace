@@ -37,9 +37,16 @@ Locally (`direnv allow` once, or `nix develop`, which also installs the git hook
 
 ```sh
 just build       # nix build -> result/*.hex for every keyboard
-just flash <kb>  # build, then flash claw44 or wings42; press the reset switch on each half
+just flash <kb>  # build, then flash claw44 or wings42 (see Flashing below)
 just draw        # regenerate drawings/*.svg (and untracked PDFs)
 just fmt         # nix fmt (treefmt)
 just check       # nix flake check: firmware, formatting, drawings up to date
 just update      # nix flake update
 ```
+
+### Flashing
+
+Flash each half in turn, with the USB cable plugged into that half, then plug it back into the left half (`MASTER_LEFT`).
+
+- Connect the half straight to the Mac. Through a hub or dock, the Pro Micro's bootloader showed up on USB but macOS never created its serial port (`/dev/cu.usbmodem*`), so nothing could be written.
+- The wings42's Pro Micro enters the bootloader only on a quick double tap of the reset switch; a single press just restarts the keyboard. The bootloader then waits about 8 seconds.
