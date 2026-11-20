@@ -16,7 +16,15 @@ def main [
 
     mkdir $output
     cp --recursive . $userspace
-    "#include QMK_KEYBOARD_H\nconst uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {{{0}}};\n"
+    mkdir ($userspace | path join $keymap_dir)
+    [
+        "#include QMK_KEYBOARD_H"
+        "const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {{{0}}};"
+        "#ifdef ENCODER_MAP_ENABLE"
+        "const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {{{0}}};"
+        "#endif"
+    ]
+    | str join "\n"
     | save ($userspace | path join $keymap_dir keymap.c)
 
     with-env { HOME: (mktemp --directory) RECORDER_LOG: $log } {

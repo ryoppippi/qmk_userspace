@@ -2,15 +2,26 @@
 
 My keymaps, built against upstream [QMK](https://github.com/qmk/qmk_firmware) as an [External Userspace](https://docs.qmk.fm/newbs_external_userspace).
 
-| Keyboard                                                    | Keymap                                                                                           |
-| ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------ |
-| [Claw44 rev1](https://github.com/dailycraftkeyboard/claw44) | [`keyboards/dailycraft/claw44/keymaps/ryoppippi`](keyboards/dailycraft/claw44/keymaps/ryoppippi) |
+| Keyboard                                                    | Keymap                                                                                             |
+| ----------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| [Claw44 rev1](https://github.com/dailycraftkeyboard/claw44) | [`keyboards/dailycraft/claw44/keymaps/ryoppippi`](keyboards/dailycraft/claw44/keymaps/ryoppippi)   |
+| [wings42 rev2](https://github.com/yfuku/wings42)            | [`keyboards/dailycraft/wings42/keymaps/ryoppippi`](keyboards/dailycraft/wings42/keymaps/ryoppippi) |
+
+Code shared by both keymaps (layers, key aliases, macros and tapping behaviour) lives in [`users/ryoppippi`](users/ryoppippi).
 
 ## Layout
 
-![claw44 keymap](keymap.svg)
+### Claw44
 
-Generated from `keymap.c` with [keymap-drawer](https://github.com/caksoylar/keymap-drawer); also available as [PDF](https://github.com/ryoppippi/qmk_userspace/releases/download/latest/keymap.pdf).
+![claw44 keymap](drawings/claw44.svg)
+
+### wings42
+
+英数 and かな sit on the two extra keys on the inner edge of the right half.
+
+![wings42 keymap](drawings/wings42.svg)
+
+Generated from `keymap.c` with [keymap-drawer](https://github.com/caksoylar/keymap-drawer); also available as PDF ([Claw44](https://github.com/ryoppippi/qmk_userspace/releases/download/latest/keymap-claw44.pdf), [wings42](https://github.com/ryoppippi/qmk_userspace/releases/download/latest/keymap-wings42.pdf)).
 
 ## Video
 
@@ -20,15 +31,22 @@ I talked about this Claw44 and split keyboards in general (in Japanese):
 
 ## Build
 
-Everything is pinned through Nix (`flake.lock`), and CI runs the same commands as below. QMK's own objects are cached as a separate derivation, so editing `keymap.c` only recompiles and links the keymap (about 2 s); `nix flake check` also runs QMK's full build and checks that it produces the same hex. Each push to `main` publishes the firmware and the keymap PDF to the `latest` release.
+Everything is pinned through Nix (`flake.lock`), and CI runs the same commands as below. QMK's own objects are cached as a separate derivation, so editing a `keymap.c` only recompiles and links that keymap (about 2 s), while editing `users/ryoppippi` rebuilds QMK's objects. `nix flake check` also runs QMK's full build and checks that it produces the same hex. Each push to `main` publishes the firmware and the keymap PDFs to the `latest` release.
 
 Locally (`direnv allow` once, or `nix develop`, which also installs the git hooks):
 
 ```sh
-just build   # nix build -> result/*.hex
-just flash   # build, then flash; press the reset switch on each half
-just draw    # regenerate keymap.svg (and an untracked keymap.pdf)
-just fmt     # nix fmt (treefmt)
-just check   # nix flake check: firmware, formatting, drawing up to date
-just update  # nix flake update
+just build       # nix build -> result/*.hex for every keyboard
+just flash <kb>  # build, then flash claw44 or wings42 (see Flashing below)
+just draw        # regenerate drawings/*.svg (and untracked PDFs)
+just fmt         # nix fmt (treefmt)
+just check       # nix flake check: firmware, formatting, drawings up to date
+just update      # nix flake update
 ```
+
+### Flashing
+
+Flash each half in turn, with the USB cable plugged into that half, then plug it back into the left half (`MASTER_LEFT`).
+
+- Connect the half straight to the Mac. Through a hub or dock, the Pro Micro's bootloader showed up on USB but macOS never created its serial port (`/dev/cu.usbmodem*`), so nothing could be written.
+- The wings42's Pro Micro enters the bootloader only on a quick double tap of the reset switch; a single press just restarts the keyboard. The bootloader then waits about 8 seconds.

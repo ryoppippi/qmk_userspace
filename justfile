@@ -3,8 +3,8 @@ default: build
 build:
     nix build
 
-flash:
-    nix run .#flash
+flash keyboard:
+    nix run .#flash-{{ keyboard }}
 
 draw:
     nix run .#draw-keymap
@@ -14,6 +14,7 @@ fmt:
 
 lint:
     qmk lint -kb dailycraft/claw44/rev1 -km ryoppippi
+    qmk lint -kb dailycraft/wings42/rev2 -km ryoppippi
 
 check:
     nix flake check

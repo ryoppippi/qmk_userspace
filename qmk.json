@@ -1,4 +1,7 @@
 {
   "userspace_version": "1.0",
-  "build_targets": [["dailycraft/claw44/rev1", "ryoppippi"]]
+  "build_targets": [
+    ["dailycraft/claw44/rev1", "ryoppippi"],
+    ["dailycraft/wings42/rev2", "ryoppippi"]
+  ]
 }
