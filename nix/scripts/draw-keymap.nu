@@ -11,10 +11,9 @@ def main [
     touch $empty_header
 
     # Expand the keymap's own macros without pulling in QMK headers, so
-    # keycodes stay readable for keymap-drawer. KEYMAP_DRAWER hides layout
-    # macros a keymap defines itself, which keymap-drawer must see by name.
+    # keycodes stay readable for keymap-drawer.
     let source = (
-        ^avr-gcc -E -P -DKEYMAP_DRAWER $'-DQMK_KEYBOARD_H="($empty_header)"'
+        ^avr-gcc -E -P $'-DQMK_KEYBOARD_H="($empty_header)"'
         $'-I(["users" $keymap] | path join)' ($keymap_dir | path join keymap.c)
     )
 
@@ -48,14 +47,7 @@ def main [
         let info_json = $work | path join info.json
         let keymap_yaml = $work | path join keymap.yaml
         ^qmk c2json --no-cpp -kb $keyboard -km $keymap $keymap_c | save $keymap_json
-        # layouts.json describes the keys of a keymap's own layout macro.
-        let layouts = $keymap_dir | path join layouts.json
-        let extra_layouts = if ($layouts | path exists) { open $layouts } else { {} }
-        ^qmk info -kb $keyboard -f json
-        | from json
-        | merge deep { layouts: $extra_layouts }
-        | to json
-        | save $info_json
+        ^qmk info -kb $keyboard -f json | save $info_json
         let titles = $layers | each { str lowercase | str capitalize }
         ^keymap -c $config parse -c 12 -l ...$titles -q $keymap_json | save $keymap_yaml
         ^keymap -c $config draw --qmk-info-json $info_json $keymap_yaml

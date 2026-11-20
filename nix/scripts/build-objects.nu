@@ -23,6 +23,9 @@ def main [
         "#ifdef ENCODER_MAP_ENABLE"
         "const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {{{0}}};"
         "#endif"
+        "#ifdef COMBO_ENABLE"
+        "combo_t key_combos[] = {};"
+        "#endif"
     ]
     | str join "\n"
     | save ($userspace | path join $keymap_dir keymap.c)

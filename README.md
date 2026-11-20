@@ -17,7 +17,7 @@ Code shared by both keymaps (layers, key aliases, macros and tapping behaviour) 
 
 ### wings42
 
-英数 and かな sit on the two extra keys on the inner edge of the right half.
+The thumbs are the Claw44's without backspace, which is a combo of the right inner and middle thumbs. The extra keys on the inner edge of the right half are left unmapped.
 
 ![wings42 keymap](drawings/wings42.svg)
 
