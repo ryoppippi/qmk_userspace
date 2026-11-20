@@ -8,9 +8,9 @@ My keymaps, built against upstream [QMK](https://github.com/qmk/qmk_firmware) as
 
 ## Layout
 
-![claw44 keymap](keymap.svg)
+![claw44 keymap](drawings/claw44.svg)
 
-Generated from `keymap.c` with [keymap-drawer](https://github.com/caksoylar/keymap-drawer); also available as [PDF](https://github.com/ryoppippi/qmk_userspace/releases/download/latest/keymap.pdf).
+Generated from `keymap.c` with [keymap-drawer](https://github.com/caksoylar/keymap-drawer); also available as [PDF](https://github.com/ryoppippi/qmk_userspace/releases/download/latest/keymap-claw44.pdf).
 
 ## Video
 
@@ -20,14 +20,14 @@ I talked about this Claw44 and split keyboards in general (in Japanese):
 
 ## Build
 
-Everything is pinned through Nix (`flake.lock`), and CI runs the same commands as below. QMK's own objects are cached as a separate derivation, so editing `keymap.c` only recompiles and links the keymap (about 2 s); `nix flake check` also runs QMK's full build and checks that it produces the same hex. Each push to `main` publishes the firmware and the keymap PDF to the `latest` release.
+Everything is pinned through Nix (`flake.lock`), and CI runs the same commands as below. QMK's own objects are cached as a separate derivation, so editing `keymap.c` only recompiles and links the keymap (about 2 s), while editing `users/ryoppippi` rebuilds QMK's objects. `nix flake check` also runs QMK's full build and checks that it produces the same hex. Each push to `main` publishes the firmware and the keymap PDF to the `latest` release.
 
 Locally (`direnv allow` once, or `nix develop`, which also installs the git hooks):
 
 ```sh
 just build   # nix build -> result/*.hex
-just flash   # build, then flash; press the reset switch on each half
-just draw    # regenerate keymap.svg (and an untracked keymap.pdf)
+just flash claw44  # build, then flash; press the reset switch on each half
+just draw    # regenerate drawings/*.svg (and untracked PDFs)
 just fmt     # nix fmt (treefmt)
 just check   # nix flake check: firmware, formatting, drawing up to date
 just update  # nix flake update

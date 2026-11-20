@@ -3,8 +3,8 @@ default: build
 build:
     nix build
 
-flash:
-    nix run .#flash
+flash keyboard:
+    nix run .#flash-{{ keyboard }}
 
 draw:
     nix run .#draw-keymap

@@ -14,7 +14,7 @@
 
         # Rendered by draw-keymap; formatting it would make the staleness
         # check report a diff that the generator never wrote.
-        settings.global.excludes = [ "keymap.svg" ];
+        settings.global.excludes = [ "drawings/*.svg" ];
 
         settings.formatter = {
           deadnix.priority = 1;

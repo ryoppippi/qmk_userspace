@@ -27,7 +27,7 @@
       imports = [
         inputs.git-hooks.flakeModule
         inputs.treefmt-nix.flakeModule
-        ./nix/target.nix
+        ./nix/targets.nix
         ./nix/nu.nix
         ./nix/firmware.nix
         ./nix/keymap-drawing.nix
