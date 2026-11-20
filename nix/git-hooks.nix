@@ -28,7 +28,7 @@
               enable = true;
               name = "draw-keymap";
               entry = lib.getExe self'.packages.draw-keymap;
-              files = "(keymap\\.c|keymap-drawer\\.yaml|users/.*)$";
+              files = "(keymap\\.c|layouts\\.json|keymap-drawer\\.yaml|users/.*)$";
               pass_filenames = false;
               priority = 10;
             };

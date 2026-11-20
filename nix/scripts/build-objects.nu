@@ -20,6 +20,9 @@ def main [
     [
         "#include QMK_KEYBOARD_H"
         "const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {{{0}}};"
+        "#ifdef ENCODER_MAP_ENABLE"
+        "const uint16_t PROGMEM encoder_map[][NUM_ENCODERS][NUM_DIRECTIONS] = {{{0}}};"
+        "#endif"
     ]
     | str join "\n"
     | save ($userspace | path join $keymap_dir keymap.c)
