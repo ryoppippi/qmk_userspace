@@ -17,7 +17,7 @@ Code shared by both keymaps (layers, key aliases, macros and tapping behaviour) 
 
 ### wings42
 
-The thumbs are the Claw44's without backspace, which is a combo of the right inner and middle thumbs. The extra keys on the inner edge of the right half are left unmapped.
+The thumbs are the Claw44's without backspace, which sits on the right middle thumb of the number layer, mirroring Del on the symbol layer. The extra keys on the inner edge of the right half are left unmapped.
 
 ![wings42 keymap](drawings/wings42.svg)
 

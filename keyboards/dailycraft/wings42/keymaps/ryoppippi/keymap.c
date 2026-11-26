@@ -24,7 +24,7 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //|--------+--------+--------+--------+--------+--------|   |--------+--------+--------+--------+--------+--------|
        _______, KC_F6  , KC_F7  , KC_F8  , KC_F9  , KC_F10 ,     KC_F11 , KC_F12 , KC_COMM, KC_DOT , KC_DLR , _______,
     //`--------+--------+--------+--------+--------+--------/   \--------+--------+--------+--------+--------+--------'
-                                  _______, _______, _______,     _______, _______, _______
+                                  _______, _______, _______,     _______, KC_BSPC, _______
     //                           `--------+--------+--------'   `--------+--------+--------'
     ),
 
@@ -52,10 +52,6 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     //                           `--------+--------+--------'   `--------+--------+--------'
     ),
 };
-
-// With one thumb key fewer per side than the Claw44, backspace is a combo.
-const uint16_t PROGMEM bspc_combo[] = {SYM_ENT, RS_TAB, COMBO_END};
-combo_t key_combos[] = {COMBO(bspc_combo, KC_BSPC)};
 
 // The right half has no encoders fitted, but shares the left half's pins, so
 // QMK still counts two on each side.
